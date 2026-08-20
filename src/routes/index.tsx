@@ -279,7 +279,7 @@ function Index() {
 
             {/* 2. Process */}
             <section id="process" className={`relative z-10 ${isDesktop ? 'flex flex-row items-center h-full gap-16 px-12 shrink-0' : 'border-t border-border px-6 py-28 bg-background/40 backdrop-blur-sm'}`}>
-              <div className={`${isDesktop ? 'w-[400px]' : 'mb-12'} reveal`}>
+              <div className={`${isDesktop ? 'w-[400px]' : 'mb-12'} reveal mix-blend-difference`}>
                 <h2 className="font-display text-4xl text-foreground sm:text-5xl">The Process</h2>
                 <p className="mt-5 text-muted-foreground">
                   We run LinkedIn and email outbound from your own profile, written in your voice — so the
@@ -294,18 +294,14 @@ function Index() {
 
               <div className={`${isDesktop ? 'flex flex-row gap-8 items-center h-full' : 'space-y-5'}`}>
                 {STEPS.map((step, i) => (
-                  <article
-                    key={step.n}
-                    className={`reveal border border-border bg-surface/80 backdrop-blur-md p-8 transition-all duration-700 hover:shadow-[var(--shadow-lift)] ${isDesktop ? 'w-[320px] h-[320px] flex flex-col justify-center' : ''}`}
-                    style={{ transitionDelay: `${i * 100}ms` }}
-                  >
-                    <div className="flex items-baseline justify-between font-mono text-xs tracking-widest text-glacier-deep">
+                  <div key={i} className="reveal relative flex flex-col gap-4 border border-border/30 bg-transparent p-8 min-w-[320px] max-w-[320px] mix-blend-difference transition-all duration-500 hover:border-glacier/50">
+                    <div className="flex items-center justify-between font-mono text-[10px] tracking-wider text-glacier-deep">
                       <span>{step.eyebrow}</span>
                       <span>{step.n}</span>
                     </div>
-                    <h3 className="mt-4 font-display text-3xl text-foreground">{step.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{step.body}</p>
-                  </article>
+                    <h3 className="font-display text-2xl text-foreground">{step.title}</h3>
+                    <p className="text-sm leading-relaxed text-muted-foreground">{step.body}</p>
+                  </div>
                 ))}
               </div>
             </section>
@@ -315,7 +311,7 @@ function Index() {
 
             {/* 3. Momentum */}
             <section id="momentum" className={`relative z-10 ${isDesktop ? 'w-screen shrink-0 h-full flex flex-col justify-center px-24' : 'border-t border-border py-28 bg-background/20 backdrop-blur-[2px] px-6'}`}>
-              <div className="max-w-2xl reveal">
+              <div className="max-w-2xl reveal mix-blend-difference">
                 <h2 className="font-display text-5xl sm:text-7xl text-foreground leading-[1.1]">Momentum<br/>compounds.</h2>
                 <p className="mt-8 text-lg text-muted-foreground max-w-lg" style={{ transitionDelay: "120ms" }}>
                   Week one is a trickle. By week eight the same motion is returning warm intros, investor
@@ -326,7 +322,7 @@ function Index() {
 
             {/* 4. Founders */}
             <section id="founders" className={`relative z-10 ${isDesktop ? 'w-screen shrink-0 h-full flex flex-col justify-center px-24' : 'border-t border-border bg-background px-6 py-24'}`}>
-              <div className="max-w-4xl reveal">
+              <div className="max-w-4xl reveal mix-blend-difference">
                 <p className="font-mono text-xs tracking-[0.3em] text-glacier-deep">FOUNDERS // FIELD_NOTES</p>
                 <blockquote className="mt-8 max-w-3xl font-display text-4xl sm:text-5xl leading-tight text-foreground">
                   "It reads exactly like me. That's the whole thing — replies come back as conversations,
@@ -338,7 +334,7 @@ function Index() {
                     ["REPLY RATE", "11.4%"],
                     ["FOUNDER HOURS / WEEK", "< 1"],
                   ].map(([label, value]) => (
-                    <div key={label} className="bg-background/80 backdrop-blur-md p-10 transition-colors hover:bg-background">
+                    <div key={label} className="bg-transparent p-10 transition-colors hover:bg-background/10">
                       <p className="font-mono text-[11px] tracking-widest text-muted-foreground">{label}</p>
                       <p className="mt-4 font-display text-5xl text-glacier-deep">{value}</p>
                     </div>

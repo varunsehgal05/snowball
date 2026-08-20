@@ -29,9 +29,22 @@ export default function MountainCanvas({ progress = 0 }: { progress?: number }) 
     camera.position.set(1.5, 2.0, 14);
     camera.lookAt(0, 3.2, -3);
 
-    // Ball
+    // Ball Geometry with realistic bumpiness
+    const geo = new THREE.IcosahedronGeometry(1, 16);
+    const pos = geo.attributes.position;
+    const v = new THREE.Vector3();
+    for (let i = 0; i < pos.count; i++) {
+      v.fromBufferAttribute(pos, i);
+      // Create a lumpy, realistic snowball surface using sine waves and random noise
+      const lump = Math.sin(v.x * 4) * Math.cos(v.y * 4) * Math.sin(v.z * 4) * 0.08;
+      const micro = (Math.random() - 0.5) * 0.03;
+      v.multiplyScalar(1 + lump + micro);
+      pos.setXYZ(i, v.x, v.y, v.z);
+    }
+    geo.computeVertexNormals();
+
     const ball = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(1, 12),
+      geo,
       new THREE.MeshPhysicalMaterial({
         color: new THREE.Color("#ffffff"),
         emissive: new THREE.Color("#8FD3FF"),
@@ -173,14 +186,16 @@ export default function MountainCanvas({ progress = 0 }: { progress?: number }) 
          if (hits.length > 0) camGroundY = hits[0].point.y;
       }
       
-      const s = 0.3 + t * 0.8;
-      ball.position.set(pointX, pointY + s, pointZ);
+      // Snowball grows significantly as it rolls down the mountain!
+      const s = 0.2 + t * 2.8;
+      // Sink it slightly into the snow so the lumpy geometry doesn't float
+      ball.position.set(pointX, pointY + s * 0.9, pointZ);
       ball.scale.setScalar(s);
       ball.rotation.x += 0.04;
       ball.rotation.z += 0.02;
 
-      // Camera follows from a safe distance, guaranteed to be above ground
-      const targetCamY = Math.max(pointY + 6, camGroundY + 4);
+      // Camera follows from a safe distance, guaranteed to be above ground and the snowball
+      const targetCamY = Math.max(pointY + s + 4, camGroundY + 4);
       
       camera.position.x += (camX - camera.position.x) * 0.05;
       camera.position.y += (targetCamY - camera.position.y) * 0.05;
