@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 /** 3D mountain range using imported GLB model and a snowball rolling down a trail. */
 export default function MountainCanvas({ progress = 0 }: { progress?: number }) {
@@ -74,12 +75,16 @@ export default function MountainCanvas({ progress = 0 }: { progress?: number }) 
     let startX = 20;
     let startZ = -30;
 
-    // GLB Loading
+    // Load the GLB model
     const loader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+    loader.setDRACOLoader(dracoLoader);
+    
     let terrainMesh: THREE.Group | null = null;
     let trail: THREE.Line | null = null;
 
-    loader.load('/snowy-mountain.glb', (gltf) => {
+    loader.load("/snowy-mountain.min.glb", (gltf) => {
       terrainMesh = gltf.scene;
       
       // Auto-scale and position the model to fit our scene
